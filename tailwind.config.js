@@ -6,6 +6,10 @@ module.exports = {
       fontFamily: {},
       colors: {
         primary: '#303546',
+        google: '#4285f4',
+        feminine: '#ffe5e8',
+        pink: '#f2d8db',
+        oud: '#400014',
       },
     },
   },

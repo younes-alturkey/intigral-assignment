@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </WindowWrapper>
 
       <NextTopLoader
-        color="#303546"
+        color="#4285f4"
         initialPosition={0.08}
         crawlSpeed={200}
         height={3}
@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
         showSpinner={true}
         easing="ease"
         speed={200}
-        shadow="0 0 10px #303546,0 0 5px #303546"
+        shadow="0 0 10px #4285f4,0 0 5px #4285f4"
       />
     </>
   )

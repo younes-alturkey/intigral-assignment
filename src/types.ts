@@ -61,14 +61,32 @@ export type AppHeadProps = {
 
 export type LayoutProps = {
   metadata: MetaDataProps
-  children: JSX.Element
+  children: JSX.Element | Array<JSX.Element>
 }
 
 export type MainProps = {
-  children: JSX.Element
+  children: JSX.Element | Array<JSX.Element>
 }
 
 export type HomeProps = {
   metadata: MetaDataProps
-  children: JSX.Element
+  children: JSX.Element | Array<JSX.Element>
+}
+
+export type ContainerProps = {
+  children: JSX.Element | Array<JSX.Element>
+}
+
+export type IconProps = {
+  icon: string
+  fontSize?: string
+  className?: string
+  onClick?: () => void
+}
+
+export type TooltipProps = {
+  children: JSX.Element | Array<JSX.Element>
+  tip: string
+  className?: string
+  onClick?: () => void
 }

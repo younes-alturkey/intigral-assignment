@@ -1,38 +1,140 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">
+  <br>
+<a href="https://www.intigral.net" target="_blank"><img src="https://raw.githubusercontent.com/younes-alturkey/intigral-assignment/main/public/favicon.png" alt="Tuwaiq Logo" width="80"/></a>
+  <br>
 
-## Getting Started
+<a href="https://intigral.younes.ninja" target="_blank">Intigral: Younes Alturkey Assignment</a>
 
-First, run the development server:
+</h1>
+<h4 align="center">Google search page clone using Nextjs, TypeScript, TailwindCss, Axios, and TMDB API</h4>
+
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#tech-stack">Tech Stack</a> •
+  <a href="#license">License</a> •
+  <a href="https://bit-chunk.netlify.app">Live</a>
+</p>
+
+<p align="center">
+  <a href="https://bit-chunk.netlify.app" target="_blank"><img src="https://raw.githubusercontent.com/younes-alturkey/bitchunk.co/main/frontend/src/assets/img/demo.gif" alt="demo"/></a>
+</p>
+
+<br/>
+
+<div id="key-features">
+
+## Key Features - المزايا
+
+- **Simple**, **Modern**, **Easy-To-Use** user interface
+- Original file is immediately deleted after sharding
+- Small and portable reference file that is **easy to share**
+- **Password-locked** assembly point
+- Files may only be assembled once for enhanced security
+- Shard somewhere, **assemble anywhere**
+- AES-256 Encryption
+
+</div>
+<br/>
+
+<div id="how-to-use">
+
+## How To Use - طريقة الإستخدام
+
+From your command line:
+
+#### # Clone this repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone https://github.com/younes-alturkey/bitchunk.co.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### # Go into the frontend directory
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+cd bitchunk.co/frontend
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+#### # Install the dependencies
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+#### # Run the app
 
-## Learn More
+```bash
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+Note: the service is in its first version, so expect some bugs.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+</div>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<br/>
 
-## Deploy on Vercel
+<div id="tech-stack">
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tech Stack - التكنولوجيا المستخدمة
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### <a href="https://bitchunk-api.azurewebsites.net/swagger/index.html" target="_blank">Backend</a> - الخلفية
+
+- .NET Core 5 Web API with 5 Controllers
+- Entity Framework - Code First Approach
+- Microsoft SQL Database with 8 Tables
+
+### <a href="https://bit-chunk.netlify.app" target="_blank">Frontend</a> - الواجهة
+
+- React.js 17.0.2 with 10 Views
+
+### Deployment - السيرفرات
+
+- Backend hosted at Azure App Service S3 Plan
+- Database hosted at Azure SQL Database
+- Fronted hosted at Netlify free service
+
+</div>
+
+<br/>
+
+## Wireframes - التصاميم
+
+<a href="https://github.com/younes-alturkey/bitchunk.co/blob/main/frontend/bitchunk-wireframes.pdf" target="_blank">bitchunk-wireframes.pdf</a>
+
+<br/>
+
+## Google Lighthouse Report - إختبار الجودة من جوجل
+
+<p align="center">
+<a href="https://googlechrome.github.io/lighthouse/viewer/?psiurl=https%3A%2F%2Fbitchunk.co"><img src="https://github.com/younes-alturkey/bitchunk.co/blob/main/frontend/src/assets/img/lighthouse-report.png" alt="Quality Check"/></a>
+</p>
+
+<br/>
+
+## Unit Tests - الإختبارات
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/younes-alturkey/bitchunk.co/main/backend-tests/tests-results.png" alt="Unit Tests Screenshot"/>
+</p>
+
+<div id="license">
+
+<br/>
+
+## License - الرخصة
+
+[Open Source License ➝ MIT](https://github.com/younes-alturkey/bitchunk.co/blob/main/LICENSE.md)
+
+</div>
+
+<br/>
+
+## Developer - المطور
+
+> Younes Alturkey - يونس التركي
+
+> GitHub: [@younes-alturkey](https://github.com/younes-alturkey) &nbsp;&middot;&nbsp;
+> Website: [younesalturkey.sa](https://younesalturkey.sa) &nbsp;&middot;&nbsp;
+> LinkedIn: [younes-alturkey](https://www.linkedin.com/in/younes-alturkey/)
+
+</div>
