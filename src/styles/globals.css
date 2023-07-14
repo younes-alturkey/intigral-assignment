@@ -2,26 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
+html,
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+h1 {
+  @apply text-6xl;
+}
+
+h2 {
+  @apply text-5xl;
+}
+
+h3 {
+  @apply text-4xl;
+}
+
+h4 {
+  @apply text-3xl;
+}
+
+h5 {
+  @apply text-2xl;
+}
+
+h6 {
+  @apply text-xl;
+}
+
+p {
+  @apply text-lg;
+}
+
+img {
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+::-webkit-scrollbar {
+  height: 0px !important;
+  width: 0px !important;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  cursor: pointer;
+}
+::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 0px;
+}
+
+::selection {
+  @apply bg-primary text-white;
+}
+
+.absolute-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

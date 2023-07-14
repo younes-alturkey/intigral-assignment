@@ -1,25 +1,47 @@
 {
   "name": "intigral-assignment",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
+  "homepage": "https://intigral.younes.ninja",
+  "author": {
+    "name": "Younes Alturkey",
+    "email": "hi@younes.ninja",
+    "url": "http://younes.ninja"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write .",
+    "docker:build": "docker build -t intigral-assignment-web .",
+    "docker:run": "docker run -p 3000:3000 intigral-assignment-web"
   },
+  "pre-commit": [
+    "build",
+    "prettier"
+  ],
   "dependencies": {
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.10",
+    "formik": "^2.4.2",
     "next": "13.4.10",
+    "nextjs-toploader": "^1.4.2",
     "postcss": "8.4.26",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "pre-commit": "^1.2.2",
+    "prettier": "^3.0.0",
+    "yup": "^1.2.0"
   }
 }
