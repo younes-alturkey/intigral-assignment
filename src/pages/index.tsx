@@ -1,5 +1,7 @@
+import * as api from '@/api'
 import Icon from '@/components/icon'
 import metadata from '@/config/metadata'
+import * as enums from '@/enums'
 import Layout from '@/layout'
 import * as types from '@/types'
 import Image from 'next/image'
@@ -8,6 +10,7 @@ import { ChangeEvent, useState } from 'react'
 
 export default function Home(props: types.HomeProps) {
   const [searchTerm, setSearchTerm] = useState('')
+  const [searchResult, setSearchResult] = useState(null)
 
   const onClear = () => {
     setSearchTerm('')
@@ -16,6 +19,23 @@ export default function Home(props: types.HomeProps) {
   const onSearchTermChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
+
+  const onMovieSearch = async () => {
+    try {
+      const movieResult = await api.searchForMovieByName(searchTerm)
+      if (movieResult.status === enums.HTTP.OK) {
+        console.log(movieResult.data)
+        setSearchResult(movieResult.data)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // console.log(props.movieData)
+  // console.log(props.titanicSearch)
+  // console.log(props.alternativesData)
+  // console.log(props.recommendationsData)
 
   return (
     <Layout metadata={props.metadata}>
@@ -78,7 +98,10 @@ export default function Home(props: types.HomeProps) {
                   />
                 </div>
 
-                <div className="w-5 h-5 relative cursor-pointer hover:opacity-80">
+                <div
+                  className="w-5 h-5 relative cursor-pointer hover:opacity-80"
+                  onClick={onMovieSearch}
+                >
                   <Image
                     className="object-cover"
                     src="/images/search.svg"
@@ -219,7 +242,7 @@ export default function Home(props: types.HomeProps) {
         </div>
       </section>
 
-      <section className="mt-8 pl-[12rem] pr-16 border-t border-gray-100 w-full flex justify-between items-start py-4">
+      <section className="mt-8 pl-[12rem] pr-16 border-t border-gray-100 w-full flex justify-between items-start gap-8 py-4">
         <div className="w-full">
           <div className="flex justify-start items-center gap-1 text-gray-600 select-none">
             <h5>Movies</h5>
@@ -350,12 +373,123 @@ export default function Home(props: types.HomeProps) {
             </div>
           </div>
         </div>
-        <div className="w-full border-l border-gray-100">1</div>
+        <div className="px-4 w-full border-l border-gray-100">
+          <p>About</p>
+
+          <p className="mt-8 font-bold text-sm w-80">
+            Characters:{' '}
+            <span className="text-blue font-normal hover:underline cursor-pointer">
+              LTJG Nick 'Goose' Bradshaw, Penny Benjamin, MORE
+            </span>
+          </p>
+
+          <p className="mt-4 font-bold text-sm w-80">
+            Production companies:{' '}
+            <span className="text-blue font-normal hover:underline cursor-pointer">
+              Paramount Pictures, Skydance Media, MORE
+            </span>
+          </p>
+
+          <p className="mt-4 font-bold text-sm w-80">
+            Directors:{' '}
+            <span className="text-blue font-normal hover:underline cursor-pointer">
+              Tony Scott, Joseph Kosinski
+            </span>
+          </p>
+
+          <div className="w-8/12 flex justify-end items-center">
+            <p className="text-sm text-gray-500 cursor-pointer">Feedback</p>
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-gray-200 w-8/12">
+            <p>People also search for</p>
+
+            <div className="mt-4 w-full grid grid-cols-4 justify-start items-start gap-4">
+              <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                <div className="w-full h-[6.5rem] relative rounded-lg overflow-hidden">
+                  <Image
+                    className="object-cover object-top"
+                    src="/images/maverick.jpg"
+                    alt="Top Gun: Maverick"
+                    fill
+                    priority
+                  />
+                </div>
+                <p className="w-32 mt-2 text-sm">Top Gun:</p>
+                <p className="w-32 text-sm truncate">Maverick</p>
+              </div>
+
+              <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                <div className="w-full h-[6.5rem] relative rounded-lg overflow-hidden">
+                  <Image
+                    className="object-cover object-top"
+                    src="/images/impossible.jpg"
+                    alt="Impossible"
+                    fill
+                    priority
+                  />
+                </div>
+                <p className="w-32 mt-2 text-sm">Mission:</p>
+                <p className="w-32 text-sm truncate">Impossible</p>
+              </div>
+
+              <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                <div className="w-full h-[6.5rem] relative rounded-lg overflow-hidden">
+                  <Image
+                    className="object-cover object-top"
+                    src="/images/flash.jpg"
+                    alt="The Batman"
+                    fill
+                    priority
+                  />
+                </div>
+                <p className="w-32 mt-2 text-sm">The Batman</p>
+              </div>
+
+              <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                <div className="w-full h-[6.5rem] relative rounded-lg overflow-hidden">
+                  <Image
+                    className="object-cover object-top"
+                    src="/images/matrix.jpg"
+                    alt="The Matrix"
+                    fill
+                    priority
+                  />
+                </div>
+                <p className="w-32 mt-2 text-sm">The Matrix</p>
+              </div>
+            </div>
+
+            <div className="mt-4 w-full bg-gray-100 hover:bg-gray-200 rounded-3xl text-gray-700 p-1 flex justify-center items-center gap-2 select-none cursor-pointer">
+              <p>See more</p>
+              <Icon icon="mdi:arrow-right" />
+            </div>
+          </div>
+        </div>
       </section>
     </Layout>
   )
 }
 
 export const getStaticProps = async () => {
-  return { props: { metadata } }
+  const titanic = await api.searchForMovieByName('Titanic')
+  const titanicSearch = titanic.data
+
+  const movie = await api.searchForMovieById('1137094')
+  const movieData = movie.data
+
+  const alternatives = await api.searchForMovieById('1137094')
+  const alternativesData = alternatives.data
+
+  const recommendations = await api.getRecommendationsById('1137094')
+  const recommendationsData = recommendations.data
+  return {
+    props: {
+      metadata,
+      titanicSearch,
+      movieData,
+      alternativesData,
+      recommendationsData,
+    },
+  }
 }

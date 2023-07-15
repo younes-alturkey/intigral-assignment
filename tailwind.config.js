@@ -10,6 +10,7 @@ module.exports = {
         feminine: '#ffe5e8',
         pink: '#f2d8db',
         oud: '#400014',
+        blue: '#1a0dab',
       },
     },
   },

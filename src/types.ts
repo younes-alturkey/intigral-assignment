@@ -71,6 +71,10 @@ export type MainProps = {
 export type HomeProps = {
   metadata: MetaDataProps
   children: JSX.Element | Array<JSX.Element>
+  movieData: any
+  titanicSearch: any
+  alternativesData: any
+  recommendationsData: any
 }
 
 export type ContainerProps = {
