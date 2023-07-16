@@ -1,16 +1,26 @@
 import * as api from '@/api'
+import AppLoading from '@/components/app-loading'
 import Icon from '@/components/icon'
 import metadata from '@/config/metadata'
 import * as enums from '@/enums'
 import Layout from '@/layout'
 import * as types from '@/types'
+import * as utils from '@/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChangeEvent, useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 export default function Home(props: types.HomeProps) {
+  const [randChipColor, setRandChipColor] = useState(
+    utils.getRandomChipColors()
+  )
+  const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [searchResult, setSearchResult] = useState(null)
+  const [elapsedSearchTime, setElapsedSearchTime] = useState(0)
+  const [searchResult, setSearchResult] = useState<any>(null)
+  const [movie, setMovie] = useState<any>(null)
+  const [cast, setCast] = useState<any>(null)
 
   const onClear = () => {
     setSearchTerm('')
@@ -21,21 +31,34 @@ export default function Home(props: types.HomeProps) {
   }
 
   const onMovieSearch = async () => {
+    setLoading(true)
+    const start = Date.now()
     try {
       const movieResult = await api.searchForMovieByName(searchTerm)
       if (movieResult.status === enums.HTTP.OK) {
-        console.log(movieResult.data)
-        setSearchResult(movieResult.data)
+        const result = movieResult.data.results
+        if (utils.isArray(result) && utils.isNoneEmptyArray(result)) {
+          setSearchResult(result)
+          setMovie(result[0])
+          const movieId = result[0].id
+          const movieCreditsResult = await api.getMovieCreditsById(movieId)
+          if (movieResult.status === enums.HTTP.OK) {
+            setCast(movieCreditsResult.data.cast)
+            console.log(movieCreditsResult.data)
+          }
+        }
       }
     } catch (err) {
       console.log(err)
     }
-  }
 
-  // console.log(props.movieData)
-  // console.log(props.titanicSearch)
-  // console.log(props.alternativesData)
-  // console.log(props.recommendationsData)
+    const end = Date.now()
+    const elapsedTimeInSeconds = (end - start) / 1000
+    setElapsedSearchTime(elapsedTimeInSeconds)
+    toast.success(`Generated results within ${elapsedTimeInSeconds} s`)
+    setRandChipColor(utils.getRandomChipColors())
+    setLoading(false)
+  }
 
   return (
     <Layout metadata={props.metadata}>
@@ -50,8 +73,8 @@ export default function Home(props: types.HomeProps) {
               <div className="mt-1 w-[92px] h-[33px] relative">
                 <Image
                   className="object-cover"
-                  priority
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   src="/images/google.svg"
                   alt="Google white logo"
                 />
@@ -85,7 +108,7 @@ export default function Home(props: types.HomeProps) {
                     src="/images/mic.svg"
                     alt="Google Mic search icon"
                     fill
-                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
 
@@ -94,7 +117,7 @@ export default function Home(props: types.HomeProps) {
                     src="/images/image.svg"
                     alt="Google Image search icon"
                     fill
-                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
 
@@ -107,7 +130,7 @@ export default function Home(props: types.HomeProps) {
                     src="/images/search.svg"
                     alt="Google Search Icon"
                     fill
-                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               </div>
@@ -120,7 +143,7 @@ export default function Home(props: types.HomeProps) {
                 <div className="w-5 h-5 relative">
                   <Image
                     fill
-                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     src="/images/search.png"
                     alt="Google Search icon"
                   />
@@ -171,7 +194,13 @@ export default function Home(props: types.HomeProps) {
 
           <div className="mt-4 pl-40">
             <p className="text-gray-600 text-sm">
-              About 2,720,000,000 results (0.35 seconds)
+              About{' '}
+              {utils.isArray(searchResult) &&
+              utils.isNoneEmptyArray(searchResult)
+                ? (searchResult.length * 1000000).toLocaleString()
+                : '2,720,000,000'}{' '}
+              results ({elapsedSearchTime ? elapsedSearchTime.toFixed(2) : 0.35}{' '}
+              seconds)
             </p>
           </div>
 
@@ -179,15 +208,21 @@ export default function Home(props: types.HomeProps) {
             <div className="flex justify-center items-start gap-3">
               <div className="w-12 h-16 relative rounded-lg overflow-hidden">
                 <Image
-                  className=" object-cover object-top"
-                  src="/images/top-gun-thumbnail.jpg"
+                  className="object-cover object-top"
+                  src={
+                    movie
+                      ? `${process.env.TMDB_IMAGE_URL}${movie.poster_path}`
+                      : '/images/top-gun-thumbnail.jpg'
+                  }
                   alt="Top Gun Thumbnail"
                   fill
-                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <div>
-                <h4>Top Gun</h4>
+                <p className="max-w-[10rem] truncate font-medium">
+                  {movie ? movie.title : 'Top Gun'}
+                </p>
                 <div className="mt-2 flex justify-start items-center gap-1 text-gray-600">
                   <p className="text-sm">Film series</p>
                   <div className="w-4 h-4 rounded-full hover:bg-gray-100 flex justify-center items-center text-gray-500 cursor-pointer">
@@ -197,20 +232,28 @@ export default function Home(props: types.HomeProps) {
               </div>
             </div>
             <div className="flex justify-start items-center gap-4">
-              <div className="rounded-3xl select-none bg-feminine border border-oud text-oud px-4 py-2">
-                <p>Overview</p>
+              <div
+                className={`px-4 py-2 rounded-3xl select-none border ${randChipColor}`}
+              >
+                <p className="text-sm">Overview</p>
               </div>
 
-              <div className="rounded-3xl select-none cursor-pointer bg-feminine hover:bg-pink border border-feminine text-oud px-4 py-2">
-                <p>Movies</p>
+              <div
+                className={`px-4 py-2 rounded-3xl select-none cursor-pointer ${randChipColor}`}
+              >
+                <p className="text-sm">Movies</p>
               </div>
 
-              <div className="rounded-3xl select-none cursor-pointer bg-feminine hover:bg-pink border border-feminine text-oud px-4 py-2">
-                <p>Cast</p>
+              <div
+                className={`px-4 py-2 rounded-3xl select-none cursor-pointer ${randChipColor}`}
+              >
+                <p className="text-sm">Cast</p>
               </div>
 
-              <div className="rounded-3xl select-none cursor-pointer bg-feminine hover:bg-pink border border-feminine text-oud px-4 py-2">
-                <p>Trailers & clips</p>
+              <div
+                className={`px-4 py-2 rounded-3xl select-none cursor-pointer ${randChipColor}`}
+              >
+                <p className="text-sm">Trailers & clips</p>
               </div>
             </div>
           </div>
@@ -234,8 +277,8 @@ export default function Home(props: types.HomeProps) {
                 className="object-cover object-top"
                 src="/images/sat.jpg"
                 alt="Engineering Manager Sat photo"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 fill
-                priority
               />
             </div>
           </Link>
@@ -250,127 +293,245 @@ export default function Home(props: types.HomeProps) {
           </div>
 
           <div className="mt-4 w-full flex justify-start items-start gap-8">
-            <div className="text-gray-600 hover:underline select-none cursor-pointer">
-              <div className="w-24 h-40 relative rounded-lg overflow-hidden">
-                <Image
-                  fill
-                  priority
-                  className="object-cover object-top"
-                  src="/images/top-gun-banner.jpg"
-                  alt="Top Gun banner image"
-                />
-              </div>
-              <p className="w-20 mt-2 text-sm">Top Gun</p>
-              <p className="w-20 text-sm">1986</p>
-            </div>
+            {utils.isArray(searchResult) &&
+            utils.isNoneEmptyArray(searchResult) ? (
+              searchResult.slice(0, 6).map((movie: any) => (
+                <Link
+                  key={movie.id}
+                  href={`https://www.google.com/search?q=${movie.title}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-24 h-40 relative rounded-lg overflow-hidden">
+                      <Image
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover object-top"
+                        src={
+                          movie.poster_path
+                            ? `${process.env.TMDB_IMAGE_URL}${movie.poster_path}`
+                            : 'https://eapp.org/wp-content/uploads/2018/05/poster_placeholder.jpg'
+                        }
+                        alt="Top Gun banner image"
+                      />
+                    </div>
+                    <p className="w-20 mt-2 text-sm truncate">{movie.title}</p>
+                    <p className="w-20 text-sm truncate">
+                      {movie.release_date.split('-')[0]}
+                    </p>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <>
+                <Link
+                  href={`https://www.google.com/search?q=${'Top Gun'}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-24 h-40 relative rounded-lg overflow-hidden">
+                      <Image
+                        priority
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover object-top"
+                        src="/images/top-gun-banner.jpg"
+                        alt="Top Gun banner image"
+                      />
+                    </div>
+                    <p className="w-20 mt-2 text-sm truncate">Top Gun</p>
+                    <p className="w-20 text-sm truncate">1986</p>
+                  </div>
+                </Link>
 
-            <div className="text-gray-600 hover:underline select-none cursor-pointer">
-              <div className="w-24 h-40 relative rounded-lg overflow-hidden">
-                <Image
-                  fill
-                  priority
-                  className="object-cover object-top"
-                  src="/images/top-gun-banner-2.jpg"
-                  alt="Top Gun: Maverick banner image"
-                />
-              </div>
-              <p className="w-20 mt-2 text-sm">Top Gun: Maverick</p>
-              <p className="w-20 text-sm">2022</p>
-            </div>
+                <Link
+                  href={`https://www.google.com/search?q=${'Top Gun: Maverick'}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-24 h-40 relative rounded-lg overflow-hidden">
+                      <Image
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover object-top"
+                        src="/images/top-gun-banner-2.jpg"
+                        alt="Top Gun: Maverick banner image"
+                      />
+                    </div>
+                    <p className="w-20 mt-2 text-sm truncate">
+                      Top Gun: Maverick
+                    </p>
+                    <p className="w-20 text-sm truncate">2022</p>
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
 
           <div className="mt-8 flex justify-start items-center gap-1 text-gray-600 select-none">
             <h5>Cast</h5>
             <Icon className="mt-1" icon="mdi:chevron-right" fontSize="1.8rem" />
           </div>
-          <div className="mt-4 grid grid-cols-6 justify-start items-start gap-4">
-            <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
-              <div className="w-full h-28 relative rounded-lg overflow-hidden">
-                <Image
-                  className="object-cover object-top"
-                  src="/images/miles-teller.jpg"
-                  alt="Miles Teller"
-                  fill
-                  priority
-                />
-              </div>
-              <p className="w-32 mt-2 text-sm">Miles Teller</p>
-              <p className="w-32 text-sm truncate">Bradley Bradshaw</p>
-            </div>
+          <div className="mt-4 grid grid-cols-6 justify-start items-start gap-2">
+            {utils.isArray(cast) && utils.isNoneEmptyArray(cast) ? (
+              cast.slice(0, 6).map((c: any) => (
+                <Link
+                  key={c.id}
+                  href={`https://www.google.com/search?q=${c.original_name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-full h-40 relative rounded-lg overflow-hidden">
+                      <Image
+                        className="object-cover object-top"
+                        src={
+                          c.profile_path
+                            ? `${process.env.TMDB_IMAGE_URL}${c.profile_path}`
+                            : 'https://www.pngitem.com/pimgs/m/99-998739_dale-engen-person-placeholder-hd-png-download.png'
+                        }
+                        alt="Miles Teller"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <p className="w-32 mt-2 text-sm truncate">
+                      {c.original_name}
+                    </p>
+                    <p className="w-32 text-sm truncate">{c.character}</p>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <>
+                <Link
+                  href={`https://www.google.com/search?q=${'Miles Teller'}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-full h-28 relative rounded-lg overflow-hidden">
+                      <Image
+                        className="object-cover object-top"
+                        src="/images/miles-teller.jpg"
+                        alt="Miles Teller"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <p className="w-32 mt-2 text-sm">Miles Teller</p>
+                    <p className="w-32 text-sm truncate">Bradley Bradshaw</p>
+                  </div>
+                </Link>
 
-            <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
-              <div className="w-full h-28 relative rounded-lg overflow-hidden">
-                <Image
-                  className="object-cover object-top"
-                  src="/images/tom-cruise.jpg"
-                  alt="Tom Cruise"
-                  fill
-                  priority
-                />
-              </div>
-              <p className="w-32 mt-2 text-sm">Tom Cruise</p>
-              <p className="w-32 text-sm truncate">Pete Mitchell</p>
-            </div>
+                <Link
+                  href={`https://www.google.com/search?q=${'Tom Cruise'}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-full h-28 relative rounded-lg overflow-hidden">
+                      <Image
+                        className="object-cover object-top"
+                        src="/images/tom-cruise.jpg"
+                        alt="Tom Cruise"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <p className="w-32 mt-2 text-sm">Tom Cruise</p>
+                    <p className="w-32 text-sm truncate">Pete Mitchell</p>
+                  </div>
+                </Link>
 
-            <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
-              <div className="w-full h-28 relative rounded-lg overflow-hidden">
-                <Image
-                  className="object-cover object-top"
-                  src="/images/kelly-mcgills.jpg"
-                  alt="Kelly McGillis"
-                  fill
-                  priority
-                />
-              </div>
-              <p className="w-32 mt-2 text-sm">Kelly McGillis</p>
-              <p className="w-32 text-sm truncate">
-                Charlotte 'Charlie' Blackwood
-              </p>
-            </div>
+                <Link
+                  href={`https://www.google.com/search?q=${'Kelly McGillis'}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-full h-28 relative rounded-lg overflow-hidden">
+                      <Image
+                        className="object-cover object-top"
+                        src="/images/kelly-mcgills.jpg"
+                        alt="Kelly McGillis"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <p className="w-32 mt-2 text-sm">Kelly McGillis</p>
+                    <p className="w-32 text-sm truncate">
+                      Charlotte 'Charlie' Blackwood
+                    </p>
+                  </div>
+                </Link>
 
-            <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
-              <div className="w-full h-28 relative rounded-lg overflow-hidden">
-                <Image
-                  className="object-cover object-top"
-                  src="/images/val-kilmer.jpg"
-                  alt="Val Kilmer"
-                  fill
-                  priority
-                />
-              </div>
-              <p className="w-32 mt-2 text-sm">Val Kilmer</p>
-              <p className="w-32 text-sm truncate">Tom Kazansky</p>
-            </div>
+                <Link
+                  href={`https://www.google.com/search?q=${'Val Kilmer'}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-full h-28 relative rounded-lg overflow-hidden">
+                      <Image
+                        className="object-cover object-top"
+                        src="/images/val-kilmer.jpg"
+                        alt="Val Kilmer"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <p className="w-32 mt-2 text-sm">Val Kilmer</p>
+                    <p className="w-32 text-sm truncate">Tom Kazansky</p>
+                  </div>
+                </Link>
 
-            <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
-              <div className="w-full h-28 relative rounded-lg overflow-hidden">
-                <Image
-                  className="object-cover object-top"
-                  src="/images/jennifer-connelly.jpg"
-                  alt="Jennifer Connelly"
-                  fill
-                  priority
-                />
-              </div>
-              <p className="w-32 mt-2 text-sm">Jennifer Connelly</p>
-              <p className="w-32 text-sm truncate">Penny Benjamin</p>
-            </div>
+                <Link
+                  href={`https://www.google.com/search?q=${'Jennifer Connelly'}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-full h-28 relative rounded-lg overflow-hidden">
+                      <Image
+                        className="object-cover object-top"
+                        src="/images/jennifer-connelly.jpg"
+                        alt="Jennifer Connelly"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <p className="w-32 mt-2 text-sm">Jennifer Connelly</p>
+                    <p className="w-32 text-sm truncate">Penny Benjamin</p>
+                  </div>
+                </Link>
 
-            <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
-              <div className="w-full h-28 relative rounded-lg overflow-hidden">
-                <Image
-                  className="object-cover object-top"
-                  src="/images/glen-powell.jpg"
-                  alt="Glen Powell"
-                  fill
-                  priority
-                />
-              </div>
-              <p className="w-32 mt-2 text-sm">Glen Powell</p>
-              <p className="w-32 text-sm truncate">
-                Lt. Jake 'Hangman' Seresin
-              </p>
-            </div>
+                <Link
+                  href={`https://www.google.com/search?q=${'Glen Powell'}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="w-full text-gray-600 hover:underline select-none cursor-pointer">
+                    <div className="w-full h-28 relative rounded-lg overflow-hidden">
+                      <Image
+                        className="object-cover object-top"
+                        src="/images/glen-powell.jpg"
+                        alt="Glen Powell"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <p className="w-32 mt-2 text-sm">Glen Powell</p>
+                    <p className="w-32 text-sm truncate">
+                      Lt. Jake 'Hangman' Seresin
+                    </p>
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div className="px-4 w-full border-l border-gray-100">
@@ -378,8 +539,39 @@ export default function Home(props: types.HomeProps) {
 
           <p className="mt-8 font-bold text-sm w-80">
             Characters:{' '}
-            <span className="text-blue font-normal hover:underline cursor-pointer">
-              LTJG Nick 'Goose' Bradshaw, Penny Benjamin, MORE
+            <span className="text-blue font-normal">
+              {utils.isArray(cast) && utils.isNoneEmptyArray(cast) ? (
+                cast.slice(0, 4).map((c: any) => (
+                  <Link
+                    key={c.id}
+                    href={`https://www.google.com/search?q=${c.character}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="hover:underline">{c.character}, </span>
+                  </Link>
+                ))
+              ) : (
+                <>
+                  <Link
+                    href={`https://www.google.com/search?q=${"LTJG Nick 'Goose' Bradshaw"}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="hover:underline">
+                      LTJG Nick 'Goose' Bradshaw,
+                    </span>
+                  </Link>{' '}
+                  <Link
+                    href={`https://www.google.com/search?q=${'Penny Benjamin'}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="hover:underline">Penny Benjamin, </span>
+                  </Link>
+                </>
+              )}
+              MORE
             </span>
           </p>
 
@@ -412,7 +604,7 @@ export default function Home(props: types.HomeProps) {
                     src="/images/maverick.jpg"
                     alt="Top Gun: Maverick"
                     fill
-                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
                 <p className="w-32 mt-2 text-sm">Top Gun:</p>
@@ -426,7 +618,7 @@ export default function Home(props: types.HomeProps) {
                     src="/images/impossible.jpg"
                     alt="Impossible"
                     fill
-                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
                 <p className="w-32 mt-2 text-sm">Mission:</p>
@@ -440,7 +632,7 @@ export default function Home(props: types.HomeProps) {
                     src="/images/flash.jpg"
                     alt="The Batman"
                     fill
-                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
                 <p className="w-32 mt-2 text-sm">The Batman</p>
@@ -453,7 +645,7 @@ export default function Home(props: types.HomeProps) {
                     src="/images/matrix.jpg"
                     alt="The Matrix"
                     fill
-                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
                 <p className="w-32 mt-2 text-sm">The Matrix</p>
@@ -467,29 +659,16 @@ export default function Home(props: types.HomeProps) {
           </div>
         </div>
       </section>
+
+      {loading ? <AppLoading /> : <></>}
     </Layout>
   )
 }
 
 export const getStaticProps = async () => {
-  const titanic = await api.searchForMovieByName('Titanic')
-  const titanicSearch = titanic.data
-
-  const movie = await api.searchForMovieById('1137094')
-  const movieData = movie.data
-
-  const alternatives = await api.searchForMovieById('1137094')
-  const alternativesData = alternatives.data
-
-  const recommendations = await api.getRecommendationsById('1137094')
-  const recommendationsData = recommendations.data
   return {
     props: {
       metadata,
-      titanicSearch,
-      movieData,
-      alternativesData,
-      recommendationsData,
     },
   }
 }
