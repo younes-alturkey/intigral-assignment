@@ -72,6 +72,42 @@ Now, open browser on http://localhost:3000 or try live on https://intigral.youne
 
 <br/>
 
+<div id="how-to-build">
+
+## How To Build
+
+From your prefered command line:
+
+#### # Build the app
+
+```bash
+yarn build
+```
+
+#### # Run the app
+
+```bash
+yarn start
+```
+
+#### # Build the app (Dockerized)
+
+```bash
+yarn docker:build
+```
+
+#### # Run the app (Dockerized)
+
+```bash
+yarn docker:run
+```
+
+Now, open browser on http://localhost:3000 or try live on https://intigral.younes.ninja.
+
+</div>
+
+<br/>
+
 <div id="tech-stack">
 
 ## Tech Stack
