@@ -11,7 +11,7 @@ export const getRandomChipColors = () => {
   if (rand < 20)
     return 'bg-cyan-100 hover:bg-cyan-200 border-cyan-300 text-cyan-700'
   else if (rand < 50)
-    return `bg-feminine hover:bg-pink border-feminine text-oud`
+    return `bg-feminine hover:bg-pink border-feminine border-oud text-oud`
   else if (rand < 70)
     return 'bg-purple-100 hover:bg-purple-200 border-purple-400 text-purple-800'
   else if (rand < 90)

@@ -41,3 +41,10 @@ export const getMovieCreditsById = async (movieId: string) => {
     .then(response => response)
     .catch(error => error)
 }
+
+export const getMovieDetailsById = async (movieId: string) => {
+  return axios
+    .get(`/movie/${movieId}/get-movie-details`, options)
+    .then(response => response)
+    .catch(error => error)
+}

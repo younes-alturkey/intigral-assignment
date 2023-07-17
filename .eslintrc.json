@@ -4,9 +4,10 @@
     "React": "readonly"
   },
   "rules": {
-    "no-unused-vars": [1, { "args": "after-used", "argsIgnorePattern": "^_" }],
     "react/no-unescaped-entities": "off",
     "no-irregular-whitespace": "off",
-    "no-undef": "off"
+    "no-undef": "off",
+    "no-unused-vars": "off",
+    "@next/next/no-img-element": "off"
   }
 }
