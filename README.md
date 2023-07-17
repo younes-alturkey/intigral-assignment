@@ -40,7 +40,7 @@
 
 ## How To Use
 
-From your command line:
+From your prefered command line:
 
 #### # Clone this repository
 
@@ -66,7 +66,7 @@ yarn install
 yarn run
 ```
 
-Now, open browser on http://localhost:3000 or try on https://intigral.younes.ninja.
+Now, open browser on http://localhost:3000 or try live on https://intigral.younes.ninja.
 
 </div>
 
@@ -87,16 +87,10 @@ Now, open browser on http://localhost:3000 or try on https://intigral.younes.nin
 
 <br/>
 
-## Wireframes - التصاميم
-
-<a href="https://github.com/younes-alturkey/bitchunk.co/blob/main/frontend/bitchunk-wireframes.pdf" target="_blank">bitchunk-wireframes.pdf</a>
-
-<br/>
-
-## Google Lighthouse Report - إختبار الجودة من جوجل
+## PageSpeed Insights
 
 <p align="center">
-<a href="https://googlechrome.github.io/lighthouse/viewer/?psiurl=https%3A%2F%2Fbitchunk.co"><img src="https://github.com/younes-alturkey/bitchunk.co/blob/main/frontend/src/assets/img/lighthouse-report.png" alt="Quality Check"/></a>
+<a href="https://pagespeed.web.dev/analysis/https-intigral-younes-ninja/ikcvks6eb6?form_factor=desktop"><img src="https://raw.githubusercontent.com/younes-alturkey/intigral-assignment/main/pagespeed.jpg" alt="PageSpeed Insights"/></a>
 </p>
 
 <br/>
@@ -105,20 +99,20 @@ Now, open browser on http://localhost:3000 or try on https://intigral.younes.nin
 
 <br/>
 
-## License - الرخصة
+## License
 
-[Open Source License ➝ MIT](https://github.com/younes-alturkey/bitchunk.co/blob/main/LICENSE.md)
+[Open Source License ➝ MIT](https://github.com/younes-alturkey/intigral-assignment/blob/main/LICENSE.md)
 
 </div>
 
 <br/>
 
-## Developer - المطور
+## Web Developer
 
 > Younes Alturkey - يونس التركي
 
 > GitHub: [@younes-alturkey](https://github.com/younes-alturkey) &nbsp;&middot;&nbsp;
-> Website: [younesalturkey.sa](https://younesalturkey.sa) &nbsp;&middot;&nbsp;
+> Website: [younes.ninja](https://www.younes.ninja) &nbsp;&middot;&nbsp;
 > LinkedIn: [younes-alturkey](https://www.linkedin.com/in/younes-alturkey/)
 
 </div>

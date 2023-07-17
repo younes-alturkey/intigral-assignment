@@ -43,7 +43,7 @@ const metadata = {
     title: 'Younes Alturkey | Intigral',
     description: `Based in Riyadh and Dubai, Intigral is the Media and Advertising arm of stc, and MENA’s leading provider of digital entertainment, sports, and media services via its market-leading and award-winning solutions, stc tv, Jawwy TV and Dawri Plus.`,
     url: 'https://intigral.net',
-    siteName: 'منصة تحفيز ثقافة ريادة الأعمال',
+    siteName: 'Younes Alturkey | Intigral',
     images: [
       {
         key: 'md',
