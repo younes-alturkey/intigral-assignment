@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-<a href="https://www.intigral.net" target="_blank"><img src="https://raw.githubusercontent.com/younes-alturkey/intigral-assignment/main/public/favicon.png" alt="Tuwaiq Logo" width="80"/></a>
+<a href="https://intigral.younes.ninja" target="_blank"><img src="https://raw.githubusercontent.com/younes-alturkey/intigral-assignment/main/public/favicon.png" alt="Intigral Logo" width="80"/></a>
   <br>
 
 <a href="https://intigral.younes.ninja" target="_blank">Intigral: Younes Alturkey Assignment</a>
@@ -13,61 +13,60 @@
   <a href="#how-to-use">How To Use</a> •
   <a href="#tech-stack">Tech Stack</a> •
   <a href="#license">License</a> •
-  <a href="https://bit-chunk.netlify.app">Live</a>
+  <a href="https://intigral.younes.ninja">Live</a>
 </p>
 
 <p align="center">
-  <a href="https://bit-chunk.netlify.app" target="_blank"><img src="https://raw.githubusercontent.com/younes-alturkey/bitchunk.co/main/frontend/src/assets/img/demo.gif" alt="demo"/></a>
+  <a href="https://intigral.younes.ninja" target="_blank"><img src="https://github.com/younes-alturkey/intigral-assignment/blob/main/demo.gif?raw=true" alt="demo"/></a>
 </p>
 
 <br/>
 
 <div id="key-features">
 
-## Key Features - المزايا
+## Key Features
 
-- **Simple**, **Modern**, **Easy-To-Use** user interface
-- Original file is immediately deleted after sharding
-- Small and portable reference file that is **easy to share**
-- **Password-locked** assembly point
-- Files may only be assembled once for enhanced security
-- Shard somewhere, **assemble anywhere**
-- AES-256 Encryption
+- Uses the well-known **TMDB api**
+- Built using **Nextjs** pages directory
+- Styled using **TailwindCss**
+- Programmed fully with **TypeScript**
+- **Static** and optimized page
+- **SEO** and **Metadata** optimized
 
 </div>
 <br/>
 
 <div id="how-to-use">
 
-## How To Use - طريقة الإستخدام
+## How To Use
 
 From your command line:
 
 #### # Clone this repository
 
 ```bash
-git clone https://github.com/younes-alturkey/bitchunk.co.git
+git clone https://github.com/younes-alturkey/intigral-assignment.git
 ```
 
-#### # Go into the frontend directory
+#### # Go into the project directory
 
 ```bash
-cd bitchunk.co/frontend
+cd intigral-assignment
 ```
 
 #### # Install the dependencies
 
 ```bash
-npm install
+yarn install
 ```
 
 #### # Run the app
 
 ```bash
-npm start
+yarn run
 ```
 
-Note: the service is in its first version, so expect some bugs.
+Now, open browser on http://localhost:3000 or try on https://intigral.younes.ninja.
 
 </div>
 
@@ -75,23 +74,14 @@ Note: the service is in its first version, so expect some bugs.
 
 <div id="tech-stack">
 
-## Tech Stack - التكنولوجيا المستخدمة
+## Tech Stack
 
-### <a href="https://bitchunk-api.azurewebsites.net/swagger/index.html" target="_blank">Backend</a> - الخلفية
-
-- .NET Core 5 Web API with 5 Controllers
-- Entity Framework - Code First Approach
-- Microsoft SQL Database with 8 Tables
-
-### <a href="https://bit-chunk.netlify.app" target="_blank">Frontend</a> - الواجهة
-
-- React.js 17.0.2 with 10 Views
-
-### Deployment - السيرفرات
-
-- Backend hosted at Azure App Service S3 Plan
-- Database hosted at Azure SQL Database
-- Fronted hosted at Netlify free service
+- [Reactjs](https://react.dev/)
+- [Nextjs](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwindcss](https://tailwindcss.com/)
+- [Axios](https://axios-http.com/)
+- [The Movie Database (TMDB) API](https://www.themoviedb.org/)
 
 </div>
 
@@ -110,12 +100,6 @@ Note: the service is in its first version, so expect some bugs.
 </p>
 
 <br/>
-
-## Unit Tests - الإختبارات
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/younes-alturkey/bitchunk.co/main/backend-tests/tests-results.png" alt="Unit Tests Screenshot"/>
-</p>
 
 <div id="license">
 
